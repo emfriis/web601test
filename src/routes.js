@@ -20,6 +20,20 @@ const requestHandler = (req, res) => { // request & response
 
     return req.on('end', () => {
         const parseBody = Buffer.concat(body).toString();
-        const message = parseBody.trim()
+        const message = parseBody.split('=')[1];
+        fs.writeFile('./message.txt', message, err => {
+            res.statusCode = 302;
+            res.setHeader('Location', '/');
+            return res.end();
+        })
     })
-} // requestHandler will be an ES6 function
+
+    // res.setHeader('content-type', 'text/html');
+    // res.write('<html>');
+    // res.write('<head><title>WEB601</title></head>');
+    // res.write('<body><h1>WEB601</h1></body>');
+    // res.write('</hmtl>');
+    // res.end();
+} // requestHandler ES6 function
+
+exports.handler = requestHandler; // export then call in other file
